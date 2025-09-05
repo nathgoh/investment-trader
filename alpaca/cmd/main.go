@@ -1,43 +1,24 @@
 package main
 
 import (
-	"fmt"
 	"log"
+	"net/http"
 
 	"github.com/joho/godotenv"
-
-	"github.com/nathgoh/investment-trader/alpaca/internal/marketdata"
+	"github.com/nathgoh/investment-trader/alpaca/api/routes"
 )
 
 func main() {
-	// Load .env file
+	// Load .env file from the project root
 	err := godotenv.Load("../../.env")
 	if err != nil {
-		log.Fatal("Error loading .env file")
+		log.Fatal("Error loading .env file. Make sure it's in the project root.")
 	}
 
-	// Get API keys from environment variables
-	// apiKey := os.Getenv("ALPACA_PAPER_API_KEY")
-	// apiSecret := os.Getenv("ALPACA_PAPER_SECRET_KEY")
+	mux := routes.SetupRoutes()
 
-	// if apiKey == "" || apiSecret == "" {
-	// 	log.Fatal("API key or secret not found in .env file")
-	// }
-
-	// client := alpaca.NewClient(alpaca.ClientOpts{
-	// 	APIKey:    apiKey,
-	// 	APISecret: apiSecret,
-	// 	BaseURL:   "https://paper-api.alpaca.markets",
-	// })
-	// acct, err := client.GetAccount()
-	// if err != nil {
-	// 	panic(err)
-	// }
-	// fmt.Printf("%+v\n", *acct)
-
-	quotes, err := marketdata.GetStockQuote("AAPL", 1, "7/25/2025")
-	if err != nil {
-		panic(err)
+	log.Println("Starting server on :8080")
+	if err := http.ListenAndServe(":8080", mux); err != nil {
+		log.Fatalf("Failed to run server: %v", err)
 	}
-	fmt.Printf("%+v\n", quotes)
 }
