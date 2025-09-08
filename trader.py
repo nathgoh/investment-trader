@@ -1,8 +1,20 @@
 import streamlit as st
 import requests
-import json
 
 st.title("AI Investment Trader")
+
+def get_health():
+    """
+    Calls the Go backend to get the health status.
+    """
+
+    try:
+        response = requests.get("http://localhost:8080/health")
+        response.raise_for_status()  # Raise an exception for bad status codes
+        return response.json()
+    except requests.exceptions.RequestException as e:
+        st.error(f"Error calling the backend: {e}")
+        return None
 
 def get_stock_quote(symbol):
     """
@@ -10,7 +22,7 @@ def get_stock_quote(symbol):
     """
 
     try:
-        response = requests.get(f"http://localhost:8080/api/v1/marketdata/quotes/{symbol}")
+        response = requests.get(f"http://localhost:8080/api/marketdata/quotes/{symbol}")
         response.raise_for_status()  # Raise an exception for bad status codes
         return response.json()
     except requests.exceptions.RequestException as e:
@@ -31,5 +43,10 @@ def stock_prediction():
                 st.json(quote)
         else:
             st.warning("Please enter a stock symbol.")
+
+    if st.button("Get Health"):
+        health = get_health()
+        if health:
+            st.json(health)
 
 stock_prediction()

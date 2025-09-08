@@ -1,23 +1,26 @@
 package routes
 
 import (
-	"encoding/json"
+	"context"
 	"net/http"
 
-	"github.com/nathgoh/investment-trader/alpaca/api/handlers"
+	"github.com/gin-contrib/cors"
+	"github.com/gin-gonic/gin"
 )
 
-func SetupRoutes() *http.ServeMux {
-	mux := http.NewServeMux()
+func Handler(ctx context.Context) *gin.Engine {
 
-	mux.HandleFunc("/", func(w http.ResponseWriter, r *http.Request) {
-		w.Header().Set("Content-Type", "application/json")
-		json.NewEncoder(w).Encode(map[string]string{"message": "Welcome to the Alpaca Trading API"})
+	// Router setup with CORS middleware
+	router := gin.Default()
+	config := cors.DefaultConfig()
+	config.AllowOrigins = []string{
+		"http://localhost:8501",
+	}
+	router.Use(cors.New(config))
+
+	router.GET("api/v1/health", func(c *gin.Context) {
+		c.JSON(http.StatusOK, gin.H{"status": "ok"})
 	})
 
-	mux.HandleFunc("/api/v1/account/paper", handlers.GetPaperAccount)
-	mux.HandleFunc("/api/v1/account/live", handlers.GetLiveAccount)
-	mux.HandleFunc("/api/v1/marketdata/quotes/", handlers.GetStockQuote)
-
-	return mux
+	return router
 }
