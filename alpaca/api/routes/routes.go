@@ -6,6 +6,7 @@ import (
 
 	"github.com/gin-contrib/cors"
 	"github.com/gin-gonic/gin"
+	"github.com/nathgoh/investment-trader/alpaca/internal/utils"
 )
 
 func Handler(ctx context.Context) *gin.Engine {
@@ -18,7 +19,7 @@ func Handler(ctx context.Context) *gin.Engine {
 	}
 	router.Use(cors.New(config))
 
-	router.GET("api/v1/health", func(c *gin.Context) {
+	router.GET(utils.API_URL_PATH+"/health", func(c *gin.Context) {
 		c.JSON(http.StatusOK, gin.H{"status": "ok"})
 	})
 

@@ -9,7 +9,7 @@ def get_health():
     """
 
     try:
-        response = requests.get("http://localhost:8080/health")
+        response = requests.get("http://localhost:8080/api/v1/health")
         response.raise_for_status()  # Raise an exception for bad status codes
         return response.json()
     except requests.exceptions.RequestException as e:

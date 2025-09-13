@@ -26,7 +26,7 @@ func GetPaperAccount() *alpaca.Account {
 	client := alpaca.NewClient(alpaca.ClientOpts{
 		APIKey:    apiKey,
 		APISecret: apiSecret,
-		BaseURL:   "https://paper-api.alpaca.markets",
+		BaseURL:   PAPER_BASE_URL,
 	})
 	account, err := client.GetAccount()
 	if err != nil {
@@ -54,7 +54,7 @@ func GetLiveAccount() *alpaca.Account {
 	client := alpaca.NewClient(alpaca.ClientOpts{
 		APIKey:    apiKey,
 		APISecret: apiSecret,
-		BaseURL:   "https://api.alpaca.markets",
+		BaseURL:   LIVE_BASE_URL,
 	})
 	account, err := client.GetAccount()
 	if err != nil {
