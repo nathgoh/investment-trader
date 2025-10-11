@@ -286,36 +286,3 @@ go run cmd/main.go
 ```
 
 The server will start on `http://localhost:8080`
-
----
-
-## Example Usage with cURL
-
-### Place a Market Order
-```bash
-curl -X POST http://localhost:8080/api/v1/orders \
-  -H "Content-Type: application/json" \
-  -d '{
-    "symbol": "AAPL",
-    "qty": 1,
-    "side": "buy",
-    "type": "market",
-    "time_in_force": "day",
-    "is_paper": true
-  }'
-```
-
-### Get All Positions
-```bash
-curl http://localhost:8080/api/v1/positions?is_paper=true
-```
-
-### Get Account Information
-```bash
-curl http://localhost:8080/api/v1/account/paper
-```
-
-### Cancel All Orders
-```bash
-curl -X DELETE http://localhost:8080/api/v1/orders?is_paper=true
-```
